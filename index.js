@@ -15,6 +15,6 @@ function readWholeInput(stdin) {
   });
   return new Promise((resolve, reject) => {
     stdin.on('error', e => reject(e));
-    stdin.on('close', () => resolve(input));
+    stdin.on('end', () => resolve(input));
   });
 }
