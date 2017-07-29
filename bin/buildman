@@ -4,7 +4,22 @@ const {execSync} = require('child_process');
 
 const buildman = require('../index');
 
-buildman({
-  currentDirectory: process.cwd(),
-  execSync
-});
+(async () => {
+  const input = await readWholeInput();
+  return buildman({
+    currentDirectory: process.cwd(),
+    input,
+    execSync
+  });
+})();
+
+function readWholeInput() {
+  let input = '';
+  process.stdin.on('data', data => {
+    input += data.toString();
+  });
+  return new Promise((resolve, reject) => {
+    process.stdin.on('error', e => reject(e));
+    process.stdin.on('close', () => resolve(input));
+  });
+}
