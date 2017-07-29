@@ -1,3 +1,10 @@
 #!/usr/bin/env node
 
-require('../index');
+const {execSync} = require('child_process');
+
+const buildman = require('../index');
+
+buildman({
+  currentDirectory: process.cwd(),
+  execSync
+});
