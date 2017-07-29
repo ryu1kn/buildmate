@@ -1,0 +1,6 @@
+{
+  "name": "buildman",
+  "bin": {
+    "buildman": "bin/buildman"
+  }
+}
