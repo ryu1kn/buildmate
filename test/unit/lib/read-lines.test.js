@@ -1,6 +1,5 @@
 
 const test = require('tape');
-const sinon = require('sinon');
 const {Readable} = require('stream');
 
 const readLines = require('../../../lib/read-lines');

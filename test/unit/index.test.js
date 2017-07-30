@@ -16,7 +16,7 @@ test('it executes a task', async t => {
     ]
   };
   const stdin = new Readable({
-    read(size) {
+    read(_size) {
       this.push(null);
     }
   });
