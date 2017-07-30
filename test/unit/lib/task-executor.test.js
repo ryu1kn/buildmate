@@ -50,3 +50,43 @@ test('it executes tasks that match path patterns', async t => {
   await taskExecutor.execute({tasks, filePaths});
   t.deepEqual(execSync.args, [['COMMAND2']]);
 });
+
+test('path can be a regular expression', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const taskExecutor = new TaskExecutor({execSync});
+  const tasks = [
+    {
+      path: 'dir1/file1',
+      command: 'COMMAND1'
+    },
+    {
+      path: /dir2\/.*/,
+      command: 'COMMAND2'
+    }
+  ];
+  const filePaths = ['dir2/file2'];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [['COMMAND2']]);
+});
+
+test.skip('task gets executed once even if multiple files match the task path', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const taskExecutor = new TaskExecutor({execSync});
+  const tasks = [
+    {
+      path: 'dir1/file1',
+      command: 'COMMAND1'
+    },
+    {
+      path: 'dir2/*',
+      command: 'COMMAND2'
+    }
+  ];
+  const filePaths = ['dir2/file2', 'dir2/file3'];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [['COMMAND2']]);
+});
