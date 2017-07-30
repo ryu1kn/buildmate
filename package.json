@@ -4,7 +4,9 @@
     "buildman": "bin/buildman"
   },
   "scripts": {
-    "test": "tape 'test/**/*.test.js'",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:integration": "tape 'test/integration/**/*.test.js'",
+    "test:unit": "tape 'test/unit/**/*.test.js'",
     "lint": "eslint ."
   },
   "devDependencies": {
