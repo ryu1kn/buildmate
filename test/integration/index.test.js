@@ -5,49 +5,6 @@ const fs = require('fs');
 
 const TEST_DIR = __dirname;
 
-test('it executes a task', t => {
-  t.plan(1);
-
-  clean();
-
-  const buildmanConfig = `
-module.exports = {
-  tasks: [
-    {
-      command: 'mkdir -p tmp && echo Hello World! > tmp/hello.txt'
-    }
-  ]
-};`;
-  fs.writeFileSync(`${TEST_DIR}/buildman.config.js`, buildmanConfig, 'utf8');
-
-  execSync('../../bin/buildman', {cwd: TEST_DIR});
-  const commandOutput = fs.readFileSync(`${TEST_DIR}/tmp/hello.txt`, 'utf8');
-  t.equal(commandOutput, 'Hello World!\n');
-});
-
-test('it executes multiple tasks', t => {
-  t.plan(1);
-
-  clean();
-
-  const buildmanConfig = `
-module.exports = {
-  tasks: [
-    {
-      command: 'mkdir -p tmp && echo task1 >> tmp/tasks.txt'
-    },
-    {
-      command: 'mkdir -p tmp && echo task2 >> tmp/tasks.txt'
-    }
-  ]
-};`;
-  fs.writeFileSync(`${TEST_DIR}/buildman.config.js`, buildmanConfig, 'utf8');
-
-  execSync('../../bin/buildman', {cwd: TEST_DIR});
-  const commandOutput = fs.readFileSync(`${TEST_DIR}/tmp/tasks.txt`, 'utf8');
-  t.equal(commandOutput, 'task1\ntask2\n');
-});
-
 test('it executes tasks that match path patterns', t => {
   t.plan(1);
 
