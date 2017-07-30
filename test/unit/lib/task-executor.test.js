@@ -90,3 +90,27 @@ test('task gets executed once even if multiple files match the task path', async
   await taskExecutor.execute({tasks, filePaths});
   t.deepEqual(execSync.args, [['COMMAND2']]);
 });
+
+test('Path components can be referred in a command as environment variables', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const taskExecutor = new TaskExecutor({execSync});
+  const tasks = [
+    {
+      path: /dir1\/([^/]+)\/([^/]+)\/.*/,
+      command: 'COMMAND'
+    }
+  ];
+  const filePaths = ['dir1/dir2/dir3/file'];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [[
+    'COMMAND',
+    {
+      env: {
+        BM_PATH_VAR_1: 'dir2',
+        BM_PATH_VAR_2: 'dir3'
+      }
+    }
+  ]]);
+});
