@@ -114,3 +114,32 @@ test('Path components can be referred in a command as environment variables', as
     }
   ]]);
 });
+
+test('Task gets executed per distinct sets of path parameters', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const taskExecutor = new TaskExecutor({execSync});
+  const tasks = [
+    {
+      path: /dir1\/([^/]+)\/.*/,
+      command: 'COMMAND'
+    }
+  ];
+  const filePaths = ['dir1/dir2/file', 'dir1/dir3/file'];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [
+    [
+      'COMMAND',
+      {
+        env: {BM_PATH_VAR_1: 'dir2'}
+      }
+    ],
+    [
+      'COMMAND',
+      {
+        env: {BM_PATH_VAR_1: 'dir3'}
+      }
+    ]
+  ]);
+});
