@@ -143,3 +143,26 @@ test('Task gets executed per distinct sets of path parameters', async t => {
     ]
   ]);
 });
+
+test.skip('Task gets executed once if the sets of path parameters are identical', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const taskExecutor = new TaskExecutor({execSync});
+  const tasks = [
+    {
+      path: /dir1\/([^/]+)\/.*/,
+      command: 'COMMAND'
+    }
+  ];
+  const filePaths = ['dir1/dir2/file1', 'dir1/dir2/file2'];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [
+    [
+      'COMMAND',
+      {
+        env: {BM_PATH_VAR_1: 'dir2'}
+      }
+    ]
+  ]);
+});
