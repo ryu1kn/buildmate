@@ -1,10 +1,11 @@
 
 const readLines = require('./lib/read-lines');
+const TaskExecutor = require('./lib/task-executor');
 
 module.exports = async ({config, execSync, stdin}) => {
-  const filePaths = await readLines(stdin);
-  config.tasks.forEach(task => {
-    if (!task.path) return execSync(task.command);
-    if (filePaths.includes(task.path)) return execSync(task.command);
+  const taskExecutor = new TaskExecutor({execSync});
+  taskExecutor.execute({
+    tasks: config.tasks,
+    filePaths: await readLines(stdin)
   });
 };
