@@ -71,7 +71,7 @@ test('path can be a regular expression', async t => {
   t.deepEqual(execSync.args, [['COMMAND2']]);
 });
 
-test.skip('task gets executed once even if multiple files match the task path', async t => {
+test('task gets executed once even if multiple files match the task path', async t => {
   t.plan(1);
 
   const execSync = sinon.spy();
@@ -82,7 +82,7 @@ test.skip('task gets executed once even if multiple files match the task path', 
       command: 'COMMAND1'
     },
     {
-      path: 'dir2/*',
+      path: /dir2\/.*/,
       command: 'COMMAND2'
     }
   ];
