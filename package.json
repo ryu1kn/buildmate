@@ -1,9 +1,11 @@
 {
   "name": "buildman",
+  "version": "0.0.1",
   "bin": {
     "buildman": "bin/buildman"
   },
   "scripts": {
+    "build": "npm run lint && npm test",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
