@@ -10,5 +10,6 @@ const buildman = require('../index');
 buildman({
   config,
   stdin: process.stdin,
-  execSync
+  execSync,
+  envVars: process.env
 });

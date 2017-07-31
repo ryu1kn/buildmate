@@ -14,11 +14,30 @@ test('it executes a command', async t => {
   ];
   const filePaths = [];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(execSync.args, [['COMMAND']]);
+  t.deepEqual(execSync.args[0][0], 'COMMAND');
+});
+
+test('it executes a command with env variables', async t => {
+  t.plan(1);
+
+  const execSync = sinon.spy();
+  const envVars = {VAR: '..'};
+  const taskExecutor = new TaskExecutor({execSync, envVars});
+  const tasks = [
+    {command: 'COMMAND'}
+  ];
+  const filePaths = [];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(execSync.args, [[
+    'COMMAND',
+    {
+      env: {VAR: '..'}
+    }
+  ]]);
 });
 
 test('it executes multiple tasks', async t => {
-  t.plan(1);
+  t.plan(2);
 
   const execSync = sinon.spy();
   const taskExecutor = new TaskExecutor({execSync});
@@ -28,7 +47,8 @@ test('it executes multiple tasks', async t => {
   ];
   const filePaths = [];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(execSync.args, [['COMMAND1'], ['COMMAND2']]);
+  t.deepEqual(execSync.args[0][0], 'COMMAND1');
+  t.deepEqual(execSync.args[1][0], 'COMMAND2');
 });
 
 test('it executes tasks that match path patterns', async t => {
@@ -48,7 +68,7 @@ test('it executes tasks that match path patterns', async t => {
   ];
   const filePaths = ['dir2/test.txt'];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(execSync.args, [['COMMAND2']]);
+  t.deepEqual(execSync.args[0][0], 'COMMAND2');
 });
 
 test('path can be a regular expression', async t => {
@@ -68,7 +88,7 @@ test('path can be a regular expression', async t => {
   ];
   const filePaths = ['dir2/file2'];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(execSync.args, [['COMMAND2']]);
+  t.deepEqual(execSync.args[0][0], 'COMMAND2');
 });
 
 test('task gets executed once even if multiple files match the task path', async t => {
@@ -88,7 +108,7 @@ test('task gets executed once even if multiple files match the task path', async
   ];
   const filePaths = ['dir2/file2', 'dir2/file3'];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(execSync.args, [['COMMAND2']]);
+  t.deepEqual(execSync.args[0][0], 'COMMAND2');
 });
 
 test('Path components can be referred in a command as environment variables', async t => {
