@@ -14,5 +14,8 @@
     "eslint-config-xo": "^0.18.2",
     "sinon": "^2.4.1",
     "tape": "^4.7.0"
+  },
+  "dependencies": {
+    "deep-equal": "^1.0.1"
   }
 }

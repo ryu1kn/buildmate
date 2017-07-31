@@ -144,7 +144,7 @@ test('Task gets executed per distinct sets of path parameters', async t => {
   ]);
 });
 
-test.skip('Task gets executed once if the sets of path parameters are identical', async t => {
+test('Task gets executed once if the sets of path parameters are identical', async t => {
   t.plan(1);
 
   const execSync = sinon.spy();
