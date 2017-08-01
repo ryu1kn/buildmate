@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 const TaskListExecutor = require('../../../lib/task-list-executor');
 
-test('it executes a command', async t => {
+test('TaskListExecutor executes a command', async t => {
   t.plan(1);
 
   const {execSync, taskExecutor} = createTaskListExecutor();
@@ -16,7 +16,7 @@ test('it executes a command', async t => {
   t.deepEqual(execSync.args[0][0], 'COMMAND');
 });
 
-test.skip('it prints out the command that it is going to execute', async t => {
+test.skip('TaskListExecutor prints out the command that it is going to execute', async t => {
   t.plan(1);
 
   const {logger, taskExecutor} = createTaskListExecutor();
@@ -28,7 +28,7 @@ test.skip('it prints out the command that it is going to execute', async t => {
   t.deepEqual(logger.log.args[0][0], '===> COMMAND');
 });
 
-test.skip('it prints out the command description', async t => {
+test.skip('TaskListExecutor prints out the command description', async t => {
   t.plan(1);
 
   const {logger, taskExecutor} = createTaskListExecutor();
@@ -43,7 +43,7 @@ test.skip('it prints out the command description', async t => {
   t.deepEqual(logger.log.args[0][0], '===> DESCRIPTION');
 });
 
-test('it executes a command with env variables', async t => {
+test('TaskListExecutor executes a command with env variables', async t => {
   t.plan(1);
 
   const envVars = {VAR: '..'};
@@ -61,7 +61,7 @@ test('it executes a command with env variables', async t => {
   ]]);
 });
 
-test('it executes multiple tasks', async t => {
+test('TaskListExecutor executes multiple tasks', async t => {
   t.plan(2);
 
   const {execSync, taskExecutor} = createTaskListExecutor();
@@ -75,7 +75,7 @@ test('it executes multiple tasks', async t => {
   t.deepEqual(execSync.args[1][0], 'COMMAND2');
 });
 
-test('it executes tasks that match path patterns', async t => {
+test('TaskListExecutor executes tasks that match path patterns', async t => {
   t.plan(1);
 
   const {execSync, taskExecutor} = createTaskListExecutor();
@@ -113,7 +113,7 @@ test('path can be a regular expression', async t => {
   t.deepEqual(execSync.args[0][0], 'COMMAND2');
 });
 
-test('it executes no tasks when none of the path patterns match', async t => {
+test('TaskListExecutor executes no tasks when none of the path patterns match', async t => {
   t.plan(1);
 
   const {execSync, taskExecutor} = createTaskListExecutor();
