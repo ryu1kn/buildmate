@@ -16,7 +16,7 @@ test('TaskListExecutor executes a command', async t => {
   t.deepEqual(execSync.args[0][0], 'COMMAND');
 });
 
-test.skip('TaskListExecutor prints out the command that it is going to execute', async t => {
+test('TaskListExecutor prints out the command that it is going to execute', async t => {
   t.plan(1);
 
   const {logger, taskExecutor} = createTaskListExecutor();
@@ -25,10 +25,10 @@ test.skip('TaskListExecutor prints out the command that it is going to execute',
   ];
   const filePaths = [];
   await taskExecutor.execute({tasks, filePaths});
-  t.deepEqual(logger.log.args[0][0], '===> COMMAND');
+  t.deepEqual(logger.log.args[1][0], 'COMMAND');
 });
 
-test.skip('TaskListExecutor prints out the command description', async t => {
+test('TaskListExecutor prints out the command description', async t => {
   t.plan(1);
 
   const {logger, taskExecutor} = createTaskListExecutor();
@@ -114,9 +114,9 @@ test('path can be a regular expression', async t => {
 });
 
 test('TaskListExecutor executes no tasks when none of the path patterns match', async t => {
-  t.plan(1);
+  t.plan(2);
 
-  const {execSync, taskExecutor} = createTaskListExecutor();
+  const {execSync, taskExecutor, logger} = createTaskListExecutor();
   const tasks = [
     {
       path: 'dir1/test.txt',
@@ -128,8 +128,9 @@ test('TaskListExecutor executes no tasks when none of the path patterns match', 
     }
   ];
   const filePaths = ['NOT_EXISTING/test.txt'];
-  await taskExecutor.execute({tasks, filePaths});
+  await taskExecutor.execute({tasks, filePaths, logger});
   t.deepEqual(execSync.args, []);
+  t.deepEqual(logger.log.args, []);
 });
 
 test('task gets executed once even if multiple files match the task path', async t => {
