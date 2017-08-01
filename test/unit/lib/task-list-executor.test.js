@@ -43,11 +43,27 @@ test('TaskListExecutor prints out the command description', async t => {
   t.deepEqual(logger.log.args[0][0], '===> DESCRIPTION');
 });
 
+test('TaskListExecutor prints out the command output', async t => {
+  t.plan(1);
+
+  const execSync = () => new Buffer('COMMAND_OUTPUT');
+  const {logger, taskExecutor} = createTaskListExecutor({execSync});
+  const tasks = [
+    {
+      description: 'DESCRIPTION',
+      command: 'COMMAND'
+    }
+  ];
+  const filePaths = [];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(logger.log.args[2][0], 'COMMAND_OUTPUT');
+});
+
 test('TaskListExecutor executes a command with env variables', async t => {
   t.plan(1);
 
   const envVars = {VAR: '..'};
-  const {execSync, taskExecutor} = createTaskListExecutor(envVars);
+  const {execSync, taskExecutor} = createTaskListExecutor({envVars});
   const tasks = [
     {command: 'COMMAND'}
   ];
@@ -221,9 +237,18 @@ test('Task gets executed once if the sets of path parameters are identical', asy
   ]);
 });
 
-function createTaskListExecutor(envVars) {
-  const execSync = sinon.spy();
+function createTaskListExecutor(params = {}) {
+  const execSyncSpy = sinon.spy();
+  const defaultExecSync = (...args) => {
+    execSyncSpy(...args);
+    return new Buffer('');
+  };
+  const execSync = params.execSync || defaultExecSync;
   const logger = {log: sinon.spy()};
-  const taskExecutor = new TaskListExecutor({execSync, logger, envVars});
-  return {execSync, logger, taskExecutor};
+  const taskExecutor = new TaskListExecutor({
+    execSync,
+    logger,
+    envVars: params.envVars
+  });
+  return {execSync: execSyncSpy, logger, taskExecutor};
 }
