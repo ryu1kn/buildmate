@@ -22,7 +22,8 @@ test('it executes a task', async t => {
   });
   const execSync = sinon.spy();
   const envVars = {VAR: '..'};
-  await buildman({config, execSync, stdin, envVars});
+  const logger = {log: () => {}};
+  await buildman({config, execSync, stdin, envVars, logger});
 
   t.deepEqual(execSync.args, [[
     './COMMAND.sh',

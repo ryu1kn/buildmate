@@ -7,8 +7,7 @@ const TaskExecutor = require('../../../lib/task-executor');
 test('it executes a command', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {command: 'COMMAND'}
   ];
@@ -17,12 +16,23 @@ test('it executes a command', async t => {
   t.deepEqual(execSync.args[0][0], 'COMMAND');
 });
 
+test('it prints out the command that it is going to execute', async t => {
+  t.plan(1);
+
+  const {logger, taskExecutor} = createTaskExecutor();
+  const tasks = [
+    {command: 'COMMAND'}
+  ];
+  const filePaths = [];
+  await taskExecutor.execute({tasks, filePaths});
+  t.deepEqual(logger.log.args[0][0], '===> COMMAND');
+});
+
 test('it executes a command with env variables', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
   const envVars = {VAR: '..'};
-  const taskExecutor = new TaskExecutor({execSync, envVars});
+  const {execSync, taskExecutor} = createTaskExecutor(envVars);
   const tasks = [
     {command: 'COMMAND'}
   ];
@@ -39,8 +49,7 @@ test('it executes a command with env variables', async t => {
 test('it executes multiple tasks', async t => {
   t.plan(2);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {command: 'COMMAND1'},
     {command: 'COMMAND2'}
@@ -54,8 +63,7 @@ test('it executes multiple tasks', async t => {
 test('it executes tasks that match path patterns', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: 'dir1/test.txt',
@@ -74,8 +82,7 @@ test('it executes tasks that match path patterns', async t => {
 test('path can be a regular expression', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: 'dir1/file1',
@@ -94,8 +101,7 @@ test('path can be a regular expression', async t => {
 test('it executes no tasks when none of the path patterns match', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: 'dir1/test.txt',
@@ -114,8 +120,7 @@ test('it executes no tasks when none of the path patterns match', async t => {
 test('task gets executed once even if multiple files match the task path', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: /dir\/.*/,
@@ -130,8 +135,7 @@ test('task gets executed once even if multiple files match the task path', async
 test('Path components can be referred in a command as environment variables', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: /dir1\/([^/]+)\/([^/]+)\/.*/,
@@ -154,8 +158,7 @@ test('Path components can be referred in a command as environment variables', as
 test('Task gets executed per distinct sets of path parameters', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: /dir1\/([^/]+)\/.*/,
@@ -183,8 +186,7 @@ test('Task gets executed per distinct sets of path parameters', async t => {
 test('Task gets executed once if the sets of path parameters are identical', async t => {
   t.plan(1);
 
-  const execSync = sinon.spy();
-  const taskExecutor = new TaskExecutor({execSync});
+  const {execSync, taskExecutor} = createTaskExecutor();
   const tasks = [
     {
       path: /dir1\/([^/]+)\/.*/,
@@ -202,3 +204,10 @@ test('Task gets executed once if the sets of path parameters are identical', asy
     ]
   ]);
 });
+
+function createTaskExecutor(envVars) {
+  const execSync = sinon.spy();
+  const logger = {log: sinon.spy()};
+  const taskExecutor = new TaskExecutor({execSync, logger, envVars});
+  return {execSync, logger, taskExecutor};
+}

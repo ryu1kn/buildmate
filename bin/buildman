@@ -11,5 +11,6 @@ buildman({
   config,
   stdin: process.stdin,
   execSync,
-  envVars: process.env
+  envVars: process.env,
+  logger: console
 });
