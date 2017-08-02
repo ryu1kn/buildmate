@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {execSync} = require('child_process');
+const {spawnSync} = require('child_process');
 const path = require('path');
 const configPath = path.join(process.cwd(), 'buildman.config.js');
 const config = require(configPath);
@@ -10,7 +10,9 @@ const buildman = require('../index');
 buildman({
   config,
   stdin: process.stdin,
-  execSync,
+  stdout: process.stdout,
+  stderr: process.stderr,
+  spawnSync,
   envVars: process.env,
   logger: console
 });

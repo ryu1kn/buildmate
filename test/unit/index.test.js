@@ -9,24 +9,31 @@ test('it executes a task', async t => {
   t.plan(1);
 
   const config = {
-    tasks: [
-      {
-        command: './COMMAND.sh'
-      }
-    ]
+    tasks: [{command: './COMMAND.sh'}]
   };
   const stdin = new Readable({
     read(_size) {
       this.push(null);
     }
   });
-  const execSync = sinon.stub().returns(new Buffer('COMMAND_OUTPUT'));
-  const envVars = {VAR: '..'};
-  const logger = {log: () => {}};
-  await buildman({config, execSync, stdin, envVars, logger});
+  const params = {
+    config,
+    spawnSync: sinon.stub().returns(new Buffer('COMMAND_OUTPUT')),
+    stdin,
+    stdout: 'STDOUT',
+    stderr: 'STDERR',
+    envVars: {VAR: '..'},
+    logger: {log: () => {}}
+  };
+  await buildman(params);
 
-  t.deepEqual(execSync.args, [[
+  t.deepEqual(params.spawnSync.args, [[
     './COMMAND.sh',
-    {env: {VAR: '..'}}
+    [],
+    {
+      shell: true,
+      env: {VAR: '..'},
+      stdio: ['pipe', 'STDOUT', 'STDERR']
+    }
   ]]);
 });
