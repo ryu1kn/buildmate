@@ -20,7 +20,7 @@ test('it executes a task', async t => {
       this.push(null);
     }
   });
-  const execSync = sinon.spy();
+  const execSync = sinon.stub().returns(new Buffer('COMMAND_OUTPUT'));
   const envVars = {VAR: '..'};
   const logger = {log: () => {}};
   await buildman({config, execSync, stdin, envVars, logger});
