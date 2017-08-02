@@ -49,20 +49,23 @@ test('CommandExecutor pipes the command output and error output to given streams
   t.deepEqual(spawnSync.args[0][2].stdio, ['pipe', 'STDOUT', 'STDERR']);
 });
 
-test('CommandExecutor returns command exit status', async t => {
+test('CommandExecutor throws an error if command exits with non-0 status', async t => {
   t.plan(1);
 
-  const {commandExecutor} = createCommandExecutor();
+  const {commandExecutor} = createCommandExecutor({status: 1});
   const params = {
     command: 'COMMAND',
     envVars: {VAR2: 'var2'}
   };
-  const status = await commandExecutor.execute(params);
-  t.deepEqual(status, 'STATUS');
+  try {
+    commandExecutor.execute(params);
+  } catch (e) {
+    t.deepEqual(e.message, 'Exit status 1');
+  }
 });
 
-function createCommandExecutor() {
-  const spawnSync = sinon.stub().returns({status: 'STATUS'});
+function createCommandExecutor({status = 0} = {}) {
+  const spawnSync = sinon.stub().returns({status});
   const envVars = {VAR: '..'};
   const stdout = 'STDOUT';
   const stderr = 'STDERR';

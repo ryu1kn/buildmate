@@ -6,8 +6,7 @@ const configPath = path.join(process.cwd(), 'buildman.config.js');
 const config = require(configPath);
 
 const buildman = require('../index');
-
-buildman({
+const params = {
   config,
   stdin: process.stdin,
   stdout: process.stdout,
@@ -15,4 +14,9 @@ buildman({
   spawnSync,
   envVars: process.env,
   logger: console
+};
+buildman(params).catch(e => {
+  setTimeout(() => {
+    throw e;
+  }, 0);
 });

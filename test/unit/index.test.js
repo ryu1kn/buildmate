@@ -18,7 +18,7 @@ test('it executes a task', async t => {
   });
   const params = {
     config,
-    spawnSync: sinon.stub().returns(new Buffer('COMMAND_OUTPUT')),
+    spawnSync: sinon.stub().returns({status: 0}),
     stdin,
     stdout: 'STDOUT',
     stderr: 'STDERR',
