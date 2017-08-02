@@ -53,9 +53,11 @@ npm run build       # Set current directory to modules/module-B
 
 Possible task properties:
 
-* `path`
-* `description`
-* `command`
-* `ignoreFailure`
-* `commandCurrentDir`
-* `unless` or `if` or `condition`: run / not run task if other task has been run, or other conditions
+| Property                  | Effect                                                             | Note                |
+| ------------------------- | ------------------------------------------------------------------ | ------------------- |
+| path                      |                                                                    |                     |
+| description               |                                                                    |                     |
+| command                   |                                                                    |                     |
+| ignoreFailure             |                                                                    | Not yet implemented |
+| commandCurrentDir         |                                                                    | Not yet implemented |
+| `unless`/`if`/`condition` | run / not run task if other task has been run, or other conditions | Not yet implemented |
