@@ -64,6 +64,17 @@ test('CommandExecutor throws an error if command exits with non-0 status', async
   }
 });
 
+test('CommandExecutor does not throw an error if continueOnFailure is set to true', async t => {
+  const {commandExecutor} = createCommandExecutor({status: 1});
+  const params = {
+    command: 'COMMAND',
+    envVars: {VAR2: 'var2'},
+    continueOnFailure: true
+  };
+  commandExecutor.execute(params);
+  t.end();
+});
+
 function createCommandExecutor({status = 0} = {}) {
   const spawnSync = sinon.stub().returns({status});
   const envVars = {VAR: '..'};

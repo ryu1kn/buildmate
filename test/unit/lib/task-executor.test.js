@@ -17,3 +17,23 @@ test('TaskExecutor executes a task', t => {
   taskExecutor.execute({task, pathVarSet});
   t.deepEqual(params.commandExecutor.execute.args[0][0], {command: 'COMMAND'});
 });
+
+test('TaskExecutor instructs CommandExecutor not to raise an error if continueOnFailure is specified', t => {
+  t.plan(1);
+
+  const params = {
+    commandExecutor: {execute: sinon.spy()},
+    logger: {log: () => {}}
+  };
+  const taskExecutor = new TaskExecutor(params);
+  const task = {
+    command: 'COMMAND',
+    continueOnFailure: true
+  };
+  const pathVarSet = [[]];
+  taskExecutor.execute({task, pathVarSet});
+  t.deepEqual(params.commandExecutor.execute.args[0][0], {
+    command: 'COMMAND',
+    continueOnFailure: true
+  });
+});

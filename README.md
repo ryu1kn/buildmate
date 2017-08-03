@@ -20,7 +20,8 @@ module.exports = {
   "tasks": [
     {
       "description": "Notify build start",
-      "command": "./notify-build-start.sh"
+      "command": "./notify-build-start.sh",
+      "continueOnFailure": true
     },
     {
       "path": /^(modules\/[^/]+)\//,
@@ -44,18 +45,18 @@ modules/module-B/test/lib/bootstrap.js
 Build man invokes following 3 commands in the order
 
 ```sh
-./notify-build-start.sh
+./notify-build-start.sh                 # Failure of this task command doesn't abort the build
 cd modules/module-A && npm run build    # $BM_PATH_VAR_1 is expanded to modules/module-A
 cd modules/module-B && npm run build    # $BM_PATH_VAR_1 is expanded to modules/module-B
 ```
 
 Possible task properties:
 
-| Property                  | Effect                                                             | Note                |
-| ------------------------- | ------------------------------------------------------------------ | ------------------- |
-| path                      |                                                                    |                     |
-| description               |                                                                    |                     |
-| command                   |                                                                    |                     |
-| ignoreFailure             |                                                                    | Not yet implemented |
-| commandCurrentDir         |                                                                    | Not yet implemented |
-| `unless`/`if`/`condition` | run / not run task if other task has been run, or other conditions | Not yet implemented |
+| Property                  | Effect                                                                    | Note                |
+| ------------------------- | ------------------------------------------------------------------------- | ------------------- |
+| path                      | Path pattern to decide if task should be executed (and capture path vars) |                     |
+| description               | Task description                                                          |                     |
+| command                   | Command to execute                                                        |                     |
+| continueOnFailure         | Continue build if a task is failed                                        |                     |
+| commandCurrentDir         |                                                                           | Not yet implemented |
+| `unless`/`if`/`condition` | run / not run task if other task has been run, or other conditions        | Not yet implemented |
