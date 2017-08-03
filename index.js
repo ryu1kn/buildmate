@@ -4,11 +4,11 @@ const TaskListExecutor = require('./lib/task-list-executor');
 const TaskExecutor = require('./lib/task-executor');
 const CommandExecutor = require('./lib/command-executor');
 
-module.exports = async ({config, spawnSync, stdin, stdout, stderr, envVars, logger}) => {
-  const commandExecutor = new CommandExecutor({spawnSync, envVars, stdout, stderr});
+module.exports = async ({config, spawn, stdin, stdout, stderr, envVars, logger}) => {
+  const commandExecutor = new CommandExecutor({spawn, envVars, stdout, stderr});
   const taskExecutor = new TaskExecutor({commandExecutor, logger});
   const taskListExecutor = new TaskListExecutor({taskExecutor});
-  taskListExecutor.execute({
+  return taskListExecutor.execute({
     tasks: config.tasks,
     filePaths: await readLines(stdin)
   });

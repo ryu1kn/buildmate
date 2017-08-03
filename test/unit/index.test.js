@@ -11,14 +11,10 @@ test('it executes a task', async t => {
   const config = {
     tasks: [{command: './COMMAND.sh'}]
   };
-  const stdin = new Readable({
-    read(_size) {
-      this.push(null);
-    }
-  });
+  const stdin = createFakeStdin();
   const params = {
     config,
-    spawnSync: sinon.stub().returns({status: 0}),
+    spawn: createFakeSpawn(),
     stdin,
     stdout: 'STDOUT',
     stderr: 'STDERR',
@@ -27,7 +23,7 @@ test('it executes a task', async t => {
   };
   await buildman(params);
 
-  t.deepEqual(params.spawnSync.args, [[
+  t.deepEqual(params.spawn.args, [[
     './COMMAND.sh',
     [],
     {
@@ -37,3 +33,23 @@ test('it executes a task', async t => {
     }
   ]]);
 });
+
+function createFakeStdin() {
+  return new Readable({
+    read(_size) {
+      this.push(null);
+    }
+  });
+}
+
+function createFakeSpawn() {
+  const status = 0;
+  const command = {
+    on: (eventName, callback) => {
+      setTimeout(() => {
+        callback(status);
+      }, 0);
+    }
+  };
+  return sinon.stub().returns(command);
+}
