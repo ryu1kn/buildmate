@@ -23,20 +23,18 @@ module.exports = {
       "command": "./notify-build-start.sh"
     },
     {
-      "path": /modules\/(moduleName)\/.*/,
-      "command": "npm run build",
-      "commandCurrentDir": "modules/$BM_PATH_VAR_1",
+      "path": /^(modules\/[^/]+)\//,
+      "command": "cd $BM_PATH_VAR_1 && npm run build"
     },
     {
-      "path": "lib/**/*",
-      "command": "./build.sh lib",
-      "ignoreFailure": true
+      "path": /lib\/.*/,
+      "command": "./build.sh lib"
     }
   ]
 }
 ```
 
-If COMMIT1..COMMIT2 includes changes in following files:
+If `COMMIT1...COMMIT2` includes changes in the following files:
 
 ```
 modules/module-A/src/index.js
@@ -47,8 +45,8 @@ Build man invokes following 3 commands in the order
 
 ```sh
 ./notify-build-start.sh
-npm run build       # Set current directory to modules/module-A
-npm run build       # Set current directory to modules/module-B
+cd modules/module-A && npm run build    # $BM_PATH_VAR_1 is expanded to modules/module-A
+cd modules/module-B && npm run build    # $BM_PATH_VAR_1 is expanded to modules/module-B
 ```
 
 Possible task properties:
