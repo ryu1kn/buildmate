@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 const TaskExecutor = require('../../../lib/task-executor');
 
-test('TaskExecutor executes a task', async t => {
+test('TaskExecutor executes a task', t => {
   t.plan(1);
 
   const params = {
@@ -14,11 +14,12 @@ test('TaskExecutor executes a task', async t => {
   const taskExecutor = new TaskExecutor(params);
   const task = {command: 'COMMAND'};
   const pathVarSet = [[]];
-  await taskExecutor.execute({task, pathVarSet});
-  t.deepEqual(params.commandExecutor.execute.args[0][0], {command: 'COMMAND'});
+  taskExecutor.execute({task, pathVarSet}).then(() => {
+    t.deepEqual(params.commandExecutor.execute.args[0][0], {command: 'COMMAND'});
+  });
 });
 
-test('TaskExecutor instructs CommandExecutor not to raise an error if continueOnFailure is specified', async t => {
+test('TaskExecutor instructs CommandExecutor not to raise an error if continueOnFailure is specified', t => {
   t.plan(1);
 
   const params = {
@@ -31,9 +32,10 @@ test('TaskExecutor instructs CommandExecutor not to raise an error if continueOn
     continueOnFailure: true
   };
   const pathVarSet = [[]];
-  await taskExecutor.execute({task, pathVarSet});
-  t.deepEqual(params.commandExecutor.execute.args[0][0], {
-    command: 'COMMAND',
-    continueOnFailure: true
+  taskExecutor.execute({task, pathVarSet}).then(() => {
+    t.deepEqual(params.commandExecutor.execute.args[0][0], {
+      command: 'COMMAND',
+      continueOnFailure: true
+    });
   });
 });

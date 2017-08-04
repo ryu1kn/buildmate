@@ -4,7 +4,7 @@ const {Readable} = require('stream');
 
 const readLines = require('../../../lib/read-lines');
 
-test('it reads all lines from STDIN', async t => {
+test('it reads all lines from STDIN', t => {
   t.plan(1);
 
   const stdin = new Readable({
@@ -14,5 +14,7 @@ test('it reads all lines from STDIN', async t => {
       this.push(null);
     }
   });
-  t.deepEqual(await readLines(stdin), ['CHUNK1', 'CHUNK2', 'CHUNK3']);
+  readLines(stdin).then(lines => {
+    t.deepEqual(lines , ['CHUNK1', 'CHUNK2', 'CHUNK3']);
+  });
 });

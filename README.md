@@ -5,6 +5,10 @@
 
 Given a list of file paths, invokes all build tasks that match any of the paths.
 
+## Prerequisite
+
+* Node.js v6
+
 ## Usage
 
 ```sh

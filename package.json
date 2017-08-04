@@ -11,7 +11,7 @@
   "main": "index.js",
   "bugs": "https://github.com/ryu1kn/buildmate/issues",
   "engines": {
-    "node": ">=7.6"
+    "node": ">=6"
   },
   "repository": {
     "type": "git",

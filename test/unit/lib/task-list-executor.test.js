@@ -5,7 +5,7 @@ const sinon = require('sinon');
 const TaskExecutor = require('../../../lib/task-executor');
 const TaskListExecutor = require('../../../lib/task-list-executor');
 
-test('TaskListExecutor executes a command', async t => {
+test('TaskListExecutor executes a command', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -13,11 +13,12 @@ test('TaskListExecutor executes a command', async t => {
     {command: 'COMMAND'}
   ];
   const filePaths = [];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND'});
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND'});
+  });
 });
 
-test('TaskListExecutor prints out the command that it is going to execute', async t => {
+test('TaskListExecutor prints out the command that it is going to execute', t => {
   t.plan(1);
 
   const {logger, taskListExecutor} = createTaskListExecutor();
@@ -25,11 +26,12 @@ test('TaskListExecutor prints out the command that it is going to execute', asyn
     {command: 'COMMAND'}
   ];
   const filePaths = [];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(logger.log.args[1][0], 'COMMAND');
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(logger.log.args[1][0], 'COMMAND');
+  });
 });
 
-test('TaskListExecutor prints out the command description', async t => {
+test('TaskListExecutor prints out the command description', t => {
   t.plan(1);
 
   const {logger, taskListExecutor} = createTaskListExecutor();
@@ -40,11 +42,12 @@ test('TaskListExecutor prints out the command description', async t => {
     }
   ];
   const filePaths = [];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(logger.log.args[0][0], '\n===> DESCRIPTION');
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(logger.log.args[0][0], '\n===> DESCRIPTION');
+  });
 });
 
-test('TaskListExecutor executes multiple tasks', async t => {
+test('TaskListExecutor executes multiple tasks', t => {
   t.plan(2);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -53,12 +56,13 @@ test('TaskListExecutor executes multiple tasks', async t => {
     {command: 'COMMAND2'}
   ];
   const filePaths = [];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND1'});
-  t.deepEqual(commandExecutor.execute.args[1][0], {command: 'COMMAND2'});
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND1'});
+    t.deepEqual(commandExecutor.execute.args[1][0], {command: 'COMMAND2'});
+  });
 });
 
-test('TaskListExecutor executes tasks that match path patterns', async t => {
+test('TaskListExecutor executes tasks that match path patterns', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -73,11 +77,12 @@ test('TaskListExecutor executes tasks that match path patterns', async t => {
     }
   ];
   const filePaths = ['dir2/test.txt'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  });
 });
 
-test('path can be a regular expression', async t => {
+test('path can be a regular expression', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -92,11 +97,12 @@ test('path can be a regular expression', async t => {
     }
   ];
   const filePaths = ['dir2/file2'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  });
 });
 
-test('TaskListExecutor executes no tasks when none of the path patterns match', async t => {
+test('TaskListExecutor executes no tasks when none of the path patterns match', t => {
   t.plan(2);
 
   const {commandExecutor, taskListExecutor, logger} = createTaskListExecutor();
@@ -111,12 +117,13 @@ test('TaskListExecutor executes no tasks when none of the path patterns match', 
     }
   ];
   const filePaths = ['NOT_EXISTING/test.txt'];
-  await taskListExecutor.execute({tasks, filePaths, logger});
-  t.deepEqual(commandExecutor.execute.args, []);
-  t.deepEqual(logger.log.args, []);
+  taskListExecutor.execute({tasks, filePaths, logger}).then(() => {
+    t.deepEqual(commandExecutor.execute.args, []);
+    t.deepEqual(logger.log.args, []);
+  });
 });
 
-test('task gets executed once even if multiple files match the task path', async t => {
+test('task gets executed once even if multiple files match the task path', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -127,11 +134,12 @@ test('task gets executed once even if multiple files match the task path', async
     }
   ];
   const filePaths = ['dir/file1', 'dir/file2'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args[0][0], {command: 'COMMAND2'});
+  });
 });
 
-test('Path components can be referred in a command as environment variables', async t => {
+test('Path components can be referred in a command as environment variables', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -142,17 +150,18 @@ test('Path components can be referred in a command as environment variables', as
     }
   ];
   const filePaths = ['dir1/dir2/dir3/file'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args, [[{
-    command: 'COMMAND',
-    envVars: {
-      BM_PATH_VAR_1: 'dir2',
-      BM_PATH_VAR_2: 'dir3'
-    }
-  }]]);
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args, [[{
+      command: 'COMMAND',
+      envVars: {
+        BM_PATH_VAR_1: 'dir2',
+        BM_PATH_VAR_2: 'dir3'
+      }
+    }]]);
+  });
 });
 
-test('Task gets executed per distinct sets of path parameters', async t => {
+test('Task gets executed per distinct sets of path parameters', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -163,20 +172,21 @@ test('Task gets executed per distinct sets of path parameters', async t => {
     }
   ];
   const filePaths = ['dir1/dir2/file', 'dir1/dir3/file'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args, [
-    [{
-      command: 'COMMAND',
-      envVars: {BM_PATH_VAR_1: 'dir2'}
-    }],
-    [{
-      command: 'COMMAND',
-      envVars: {BM_PATH_VAR_1: 'dir3'}
-    }]
-  ]);
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args, [
+      [{
+        command: 'COMMAND',
+        envVars: {BM_PATH_VAR_1: 'dir2'}
+      }],
+      [{
+        command: 'COMMAND',
+        envVars: {BM_PATH_VAR_1: 'dir3'}
+      }]
+    ]);
+  });
 });
 
-test('Task gets executed once if the sets of path parameters are identical', async t => {
+test('Task gets executed once if the sets of path parameters are identical', t => {
   t.plan(1);
 
   const {commandExecutor, taskListExecutor} = createTaskListExecutor();
@@ -187,11 +197,12 @@ test('Task gets executed once if the sets of path parameters are identical', asy
     }
   ];
   const filePaths = ['dir1/dir2/file1', 'dir1/dir2/file2'];
-  await taskListExecutor.execute({tasks, filePaths});
-  t.deepEqual(commandExecutor.execute.args, [[{
-    command: 'COMMAND',
-    envVars: {BM_PATH_VAR_1: 'dir2'}
-  }]]);
+  taskListExecutor.execute({tasks, filePaths}).then(() => {
+    t.deepEqual(commandExecutor.execute.args, [[{
+      command: 'COMMAND',
+      envVars: {BM_PATH_VAR_1: 'dir2'}
+    }]]);
+  });
 });
 
 function createTaskListExecutor() {

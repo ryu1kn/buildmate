@@ -5,7 +5,7 @@ const {Readable} = require('stream');
 
 const buildmate = require('../../index');
 
-test('it executes a task', async t => {
+test('it executes a task', t => {
   t.plan(1);
 
   const config = {
@@ -21,17 +21,17 @@ test('it executes a task', async t => {
     envVars: {VAR: '..'},
     logger: {log: () => {}}
   };
-  await buildmate(params);
-
-  t.deepEqual(params.spawn.args, [[
-    './COMMAND.sh',
-    [],
-    {
-      shell: true,
-      env: {VAR: '..'},
-      stdio: ['pipe', 'STDOUT', 'STDERR']
-    }
-  ]]);
+  buildmate(params).then(() => {
+    t.deepEqual(params.spawn.args, [[
+      './COMMAND.sh',
+      [],
+      {
+        shell: true,
+        env: {VAR: '..'},
+        stdio: ['pipe', 'STDOUT', 'STDERR']
+      }
+    ]]);
+  });
 });
 
 function createFakeStdin() {
