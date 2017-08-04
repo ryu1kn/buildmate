@@ -1,6 +1,22 @@
 {
   "name": "buildmate",
   "version": "0.0.1",
+  "description": "Given a list of file paths, invokes all build tasks that match any of the path patterns.",
+  "keywords": ["build"],
+  "author": {
+    "name": "Ryuichi Inagaki",
+    "url": "https://github.com/ryu1kn"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "bugs": "https://github.com/ryu1kn/buildmate/issues",
+  "engines": {
+    "node": ">=7.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryu1kn/buildmate.git"
+  },
   "bin": {
     "buildmate": "bin/buildmate"
   },
