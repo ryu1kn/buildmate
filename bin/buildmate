@@ -2,10 +2,10 @@
 
 const {spawn} = require('child_process');
 const path = require('path');
-const configPath = path.join(process.cwd(), 'buildman.config.js');
+const configPath = path.join(process.cwd(), 'buildmate.config.js');
 const config = require(configPath);
 
-const buildman = require('../index');
+const buildmate = require('../index');
 const params = {
   config,
   stdin: process.stdin,
@@ -15,7 +15,7 @@ const params = {
   envVars: process.env,
   logger: console
 };
-buildman(params).catch(e => {
+buildmate(params).catch(e => {
   setTimeout(() => {
     throw e;
   }, 0);

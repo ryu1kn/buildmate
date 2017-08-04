@@ -1,8 +1,8 @@
 {
-  "name": "buildman",
+  "name": "buildmate",
   "version": "0.0.1",
   "bin": {
-    "buildman": "bin/buildman"
+    "buildmate": "bin/buildmate"
   },
   "scripts": {
     "build": "npm run lint && npm test",

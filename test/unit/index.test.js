@@ -3,7 +3,7 @@ const test = require('tape');
 const sinon = require('sinon');
 const {Readable} = require('stream');
 
-const buildman = require('../../index');
+const buildmate = require('../../index');
 
 test('it executes a task', async t => {
   t.plan(1);
@@ -21,7 +21,7 @@ test('it executes a task', async t => {
     envVars: {VAR: '..'},
     logger: {log: () => {}}
   };
-  await buildman(params);
+  await buildmate(params);
 
   t.deepEqual(params.spawn.args, [[
     './COMMAND.sh',

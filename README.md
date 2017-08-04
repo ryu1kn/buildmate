@@ -1,19 +1,21 @@
 
-# Build Man
+[![Build Status](https://travis-ci.org/ryu1kn/buildmate.svg?branch=master)](https://travis-ci.org/ryu1kn/buildmate)
+
+# Build Mate
 
 Given a list of file paths, invokes all build tasks that match any of the paths.
 
 ## Usage
 
 ```sh
-# Make your CI service to install Build man
-$ npm install
+# Make your CI service to install Build Mate
+$ npm install -g buildmate
 
-# Pipe git diff output to Build Man
-$ git diff --name-only COMMIT1...COMMIT2 | buildman
+# Pipe git diff output to Build Mate
+$ git diff --name-only COMMIT1...COMMIT2 | buildmate
 ```
 
-* `buildman.config.js`
+* `buildmate.config.js`
 
 ```js
 module.exports = {
@@ -42,7 +44,7 @@ modules/module-A/src/index.js
 modules/module-B/test/lib/bootstrap.js
 ```
 
-Build man invokes following 3 commands in the order
+Build Mate invokes following 3 commands in the order
 
 ```sh
 ./notify-build-start.sh                 # Failure of this task command doesn't abort the build

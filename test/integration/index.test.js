@@ -10,7 +10,7 @@ test('it executes tasks that match path patterns', t => {
 
   clean();
 
-  const buildmanConfig = `
+  const buildmateConfig = `
 module.exports = {
   tasks: [
     {
@@ -23,14 +23,14 @@ module.exports = {
     }
   ]
 };`;
-  fs.writeFileSync(`${TEST_DIR}/buildman.config.js`, buildmanConfig, 'utf8');
+  fs.writeFileSync(`${TEST_DIR}/buildmate.config.js`, buildmateConfig, 'utf8');
 
-  execSync('echo dir2/test.txt | ../../bin/buildman', {cwd: TEST_DIR});
+  execSync('echo dir2/test.txt | ../../bin/buildmate', {cwd: TEST_DIR});
   const commandOutput = fs.readFileSync(`${TEST_DIR}/tmp/tasks.txt`, 'utf8');
   t.equal(commandOutput, 'task2\n');
 });
 
 function clean() {
   execSync('rm -rf tmp', {cwd: TEST_DIR});
-  execSync('rm -rf buildman.config.js', {cwd: TEST_DIR});
+  execSync('rm -rf buildmate.config.js', {cwd: TEST_DIR});
 }

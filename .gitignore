@@ -3,5 +3,5 @@ __*
 .DS_Store
 npm-debug.log
 node_modules
-test/**/buildman.config.js
+test/**/buildmate.config.js
 tmp
