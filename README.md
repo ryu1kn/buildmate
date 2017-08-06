@@ -3,7 +3,7 @@
 
 # Build Mate
 
-Given a list of file paths, invokes all build tasks that match any of the paths.
+Build Mate. Given a list of file paths, invokes all build tasks that match any of the paths.
 
 ## Prerequisite
 
@@ -23,19 +23,25 @@ $ git diff --name-only COMMIT1...COMMIT2 | buildmate
 
 ```js
 module.exports = {
-  "tasks": [
+  tasks: [
+    // Failure of the notification doesn't abort the whole build
     {
-      "description": "Notify build start",
-      "command": "./notify-build-start.sh",
-      "continueOnFailure": true
+      description: 'Notify build start',
+      command: './notify-build-start.sh',
+      continueOnFailure: true
     },
+
+    // Regex path pattern.
+    // Capturing parts of path with `()` and reference them in the command with BM_PATH_VAR_X env variables
     {
-      "path": /^(modules\/[^/]+)\//,
-      "command": "cd $BM_PATH_VAR_1 && npm run build"
+      path: /^(modules\/[^/]+)\//,        
+      command: 'cd $BM_PATH_VAR_1 && npm run build'
     },
+
+    // Glob path pattern
     {
-      "path": "lib/**",
-      "command": "./build.sh lib"
+      path: 'lib/**',
+      command: './build.sh lib'
     }
   ]
 }
