@@ -2,7 +2,9 @@
   "name": "buildmate",
   "version": "0.0.2",
   "description": "Given a list of file paths, invokes all build tasks that match any of the path patterns.",
-  "keywords": ["build"],
+  "keywords": [
+    "build"
+  ],
   "author": {
     "name": "Ryuichi Inagaki",
     "url": "https://github.com/ryu1kn"
@@ -34,6 +36,7 @@
     "tape": "^4.7.0"
   },
   "dependencies": {
-    "deep-equal": "^1.0.1"
+    "deep-equal": "^1.0.1",
+    "minimatch": "^3.0.4"
   }
 }

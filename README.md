@@ -34,7 +34,7 @@ module.exports = {
       "command": "cd $BM_PATH_VAR_1 && npm run build"
     },
     {
-      "path": /lib\/.*/,
+      "path": "lib/**",
       "command": "./build.sh lib"
     }
   ]
@@ -56,13 +56,19 @@ cd modules/module-A && npm run build    # $BM_PATH_VAR_1 is expanded to modules/
 cd modules/module-B && npm run build    # $BM_PATH_VAR_1 is expanded to modules/module-B
 ```
 
-Possible task properties:
+### Task properties
 
-| Property                  | Effect                                                                    | Note                |
-| ------------------------- | ------------------------------------------------------------------------- | ------------------- |
-| path                      | Path pattern to decide if task should be executed (and capture path vars) |                     |
-| description               | Task description                                                          |                     |
-| command                   | Command to execute                                                        |                     |
-| continueOnFailure         | Continue build if a task is failed                                        |                     |
-| commandCurrentDir         |                                                                           | Not yet implemented |
-| `unless`/`if`/`condition` | run / not run task if other task has been run, or other conditions        | Not yet implemented |
+* `path`
+  * Optional. Path pattern to decide if task should be executed (and capture path vars).
+    `path` can be an regular expression or glob. Omitting `path` will always execute the task.
+* `description`
+  * Optional. Task description printed out at the beginning of task execution.
+* `command`
+  * Required. Command to execute. Path variables captured in `path` matching phase can be referenced
+    as environment variables like `BM_PATH_VAR_N` where `N` is a sequential number starts from 1.
+* `continueOnFailure` 
+  * Optional. Specify `true` if you want to continue the build on the task failure.
+* `commandCurrentDir`
+  * Optional. **Not yet implemented**
+* `condition` like `unless` or `if`
+  * Optional. **Not yet implemented**
