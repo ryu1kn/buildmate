@@ -1,5 +1,5 @@
-
 [![Build Status](https://travis-ci.org/ryu1kn/buildmate.svg?branch=master)](https://travis-ci.org/ryu1kn/buildmate)
+[![Coverage Status](https://coveralls.io/repos/github/ryu1kn/buildmate/badge.svg?branch=master)](https://coveralls.io/github/ryu1kn/buildmate?branch=master)
 
 # Build Mate
 
@@ -7,7 +7,7 @@ Build Mate. Given a list of file paths, invokes all build tasks that match any o
 
 ## Prerequisite
 
-* Node.js v6
+* Node.js v6+
 
 ## Usage
 

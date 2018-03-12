@@ -23,11 +23,11 @@
     "buildmate": "bin/buildmate"
   },
   "scripts": {
-    "check": "npm run lint && npm test",
-    "test": "npm run test:unit && npm run test:integration",
+    "check": "yarn run lint && yarn test",
+    "test": "yarn run test:unit && yarn run test:integration",
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
-    "coverage": "nyc npm test",
+    "coverage": "nyc yarn test",
     "lint": "eslint ."
   },
   "devDependencies": {
