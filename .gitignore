@@ -1,5 +1,7 @@
 .DS_Store
 /.idea
+/.nyc_output
+/coverage
 /test/**/buildmate.config.js
 __*
 node_modules

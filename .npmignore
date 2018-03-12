@@ -5,7 +5,10 @@
 /.idea
 /.npmignore
 /.nvmrc
+/.nycrc
+/.nyc_output
 /.travis.yml
+/coverage
 /test
 /yarn.lock
 tmp

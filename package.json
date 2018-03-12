@@ -27,12 +27,14 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
+    "coverage": "nyc npm test",
     "lint": "eslint ."
   },
   "devDependencies": {
     "eslint": "^4.3.0",
     "eslint-config-xo": "^0.18.2",
     "multiline-string": "0.1.0",
+    "nyc": "^11.4.1",
     "sinon": "^2.4.1",
     "tape": "^4.7.0"
   },
