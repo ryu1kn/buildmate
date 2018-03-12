@@ -86,11 +86,3 @@ as environment variables like `BM_PATH_VAR_N` where `N` is a sequential number s
 #### `continueOnFailure` 
 
 Optional. Specify `true` if you want to continue the build on the task failure.
-
-#### `commandCurrentDir`
-
-Optional. **Not yet implemented**
-
-#### `condition` like `unless` or `if`
-
-Optional. **Not yet implemented**
