@@ -5,5 +5,4 @@
 /test/**/buildmate.config.js
 __*
 node_modules
-tmp
 yarn-error.log

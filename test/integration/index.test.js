@@ -5,6 +5,7 @@ const fs = require('fs');
 const multiline = require('multiline-string')();
 
 const TEST_DIR = __dirname;
+const TMP_DIR = '__tmp';
 
 test('it executes tasks that match path patterns', t => {
   t.plan(1);
@@ -16,11 +17,11 @@ test('it executes tasks that match path patterns', t => {
       tasks: [
         {
           path: 'dir1/test.txt',
-          command: 'mkdir -p tmp && echo task1 >> tmp/tasks.txt'
+          command: 'mkdir -p ${TMP_DIR} && echo task1 >> ${TMP_DIR}/tasks.txt'
         },
         {
           path: 'dir2/test.txt',
-          command: 'mkdir -p tmp && echo task2 >> tmp/tasks.txt'
+          command: 'mkdir -p ${TMP_DIR} && echo task2 >> ${TMP_DIR}/tasks.txt'
         }
       ]
     };
@@ -28,11 +29,11 @@ test('it executes tasks that match path patterns', t => {
   fs.writeFileSync(`${TEST_DIR}/buildmate.config.js`, buildmateConfig, 'utf8');
 
   execSync('echo dir2/test.txt | ../../bin/buildmate', {cwd: TEST_DIR});
-  const commandOutput = fs.readFileSync(`${TEST_DIR}/tmp/tasks.txt`, 'utf8');
+  const commandOutput = fs.readFileSync(`${TEST_DIR}/${TMP_DIR}/tasks.txt`, 'utf8');
   t.equal(commandOutput, 'task2\n');
 });
 
 function clean() {
-  execSync('rm -rf tmp', {cwd: TEST_DIR});
+  execSync(`rm -rf ${TMP_DIR}`, {cwd: TEST_DIR});
   execSync('rm -rf buildmate.config.js', {cwd: TEST_DIR});
 }
