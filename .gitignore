@@ -1,7 +1,7 @@
-
-__*
 .DS_Store
-npm-debug.log
+/test/**/buildmate.config.js
+__*
 node_modules
-test/**/buildmate.config.js
+npm-debug.log
 tmp
+yarn-error.log

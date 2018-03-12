@@ -2,6 +2,7 @@
 const test = require('tape');
 const {execSync} = require('child_process');
 const fs = require('fs');
+const multiline = require('multiline-string')();
 
 const TEST_DIR = __dirname;
 
@@ -10,19 +11,20 @@ test('it executes tasks that match path patterns', t => {
 
   clean();
 
-  const buildmateConfig = `
-module.exports = {
-  tasks: [
-    {
-      path: 'dir1/test.txt',
-      command: 'mkdir -p tmp && echo task1 >> tmp/tasks.txt'
-    },
-    {
-      path: 'dir2/test.txt',
-      command: 'mkdir -p tmp && echo task2 >> tmp/tasks.txt'
-    }
-  ]
-};`;
+  const buildmateConfig = multiline(`
+    module.exports = {
+      tasks: [
+        {
+          path: 'dir1/test.txt',
+          command: 'mkdir -p tmp && echo task1 >> tmp/tasks.txt'
+        },
+        {
+          path: 'dir2/test.txt',
+          command: 'mkdir -p tmp && echo task2 >> tmp/tasks.txt'
+        }
+      ]
+    };
+    `);
   fs.writeFileSync(`${TEST_DIR}/buildmate.config.js`, buildmateConfig, 'utf8');
 
   execSync('echo dir2/test.txt | ../../bin/buildmate', {cwd: TEST_DIR});
