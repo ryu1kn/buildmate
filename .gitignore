@@ -1,7 +1,7 @@
 .DS_Store
+/.idea
 /test/**/buildmate.config.js
 __*
 node_modules
-npm-debug.log
 tmp
 yarn-error.log
