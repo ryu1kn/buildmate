@@ -28,7 +28,8 @@
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
     "coverage": "nyc yarn test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postpublish": "./tag-release.sh"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

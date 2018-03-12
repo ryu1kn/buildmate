@@ -9,6 +9,6 @@
 /.nyc_output
 /.travis.yml
 /coverage
-/test
+/tag-release.sh
 /yarn.lock
 tmp
