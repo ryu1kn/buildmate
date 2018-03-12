@@ -1,6 +1,6 @@
 {
   "name": "buildmate",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Given a list of file paths, invokes all build tasks that match any of the path patterns.",
   "keywords": [
     "build"
