@@ -23,7 +23,7 @@
     "buildmate": "bin/buildmate"
   },
   "scripts": {
-    "build": "npm run lint && npm test",
+    "check": "npm run lint && npm test",
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
@@ -31,6 +31,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
+    "coveralls": "^2.12.0",
     "eslint": "^4.3.0",
     "eslint-config-xo": "^0.18.2",
     "multiline-string": "0.1.0",
