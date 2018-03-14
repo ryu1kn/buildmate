@@ -38,7 +38,8 @@
     "multiline-string": "0.2.0",
     "nyc": "^11.4.1",
     "sinon": "^4.4.3",
-    "tape": "^4.9.0"
+    "tape": "^4.9.0",
+    "testdouble": "^3.5.2"
   },
   "dependencies": {
     "deep-equal": "^1.0.1",

@@ -1,6 +1,6 @@
 
 const test = require('tape');
-const sinon = require('sinon');
+const td = require('testdouble');
 const {Readable} = require('stream');
 
 const buildmate = require('../../index');
@@ -8,30 +8,32 @@ const buildmate = require('../../index');
 test('it executes a task', t => {
   t.plan(1);
 
-  const config = {
-    tasks: [{command: './COMMAND.sh'}]
+  const config = {tasks: [{command: './COMMAND.sh'}]};
+  const spawn = td.function();
+  const command = {
+    on: (eventName, callback) => {
+      const status = 0;
+      setTimeout(() => {
+        callback(status);
+      }, 0);
+    }
   };
-  const stdin = createFakeStdin();
+  td.when(spawn('./COMMAND.sh', [], {
+    shell: true,
+    env: {VAR: '..'},
+    stdio: ['pipe', 'STDOUT', 'STDERR']
+  })).thenReturn(command);
+
   const params = {
     config,
-    spawn: createFakeSpawn(),
-    stdin,
+    spawn,
+    stdin: createFakeStdin(),
     stdout: 'STDOUT',
     stderr: 'STDERR',
     envVars: {VAR: '..'},
     logger: {log: () => {}}
   };
-  buildmate(params).then(() => {
-    t.deepEqual(params.spawn.args, [[
-      './COMMAND.sh',
-      [],
-      {
-        shell: true,
-        env: {VAR: '..'},
-        stdio: ['pipe', 'STDOUT', 'STDERR']
-      }
-    ]]);
-  });
+  buildmate(params).then(t.pass);
 });
 
 function createFakeStdin() {
