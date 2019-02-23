@@ -3,6 +3,7 @@
 /.nyc_output
 /coverage
 /test/**/buildmate.config.js
+/package-lock.json
 __*
 node_modules
 yarn-error.log
