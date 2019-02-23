@@ -23,23 +23,23 @@
     "buildmate": "bin/buildmate"
   },
   "scripts": {
-    "check": "yarn run lint && yarn test",
-    "test": "yarn run test:unit && yarn run test:integration",
+    "check": "npm run lint && npm test",
+    "test": "npm run test:unit && npm run test:integration",
     "test:integration": "tape 'test/integration/**/*.test.js'",
     "test:unit": "tape 'test/unit/**/*.test.js'",
-    "coverage": "nyc yarn test",
+    "coverage": "nyc npm test",
     "lint": "eslint .",
     "postpublish": "./tag-release.sh"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
-    "eslint": "^4.18.2",
-    "eslint-config-xo": "^0.20.1",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.14.1",
+    "eslint-config-xo": "^0.26.0",
     "multiline-string": "0.2.0",
-    "nyc": "^11.4.1",
-    "sinon": "^4.4.3",
-    "tape": "^4.9.0",
-    "testdouble": "^3.5.2"
+    "nyc": "^13.3.0",
+    "sinon": "^7.2.4",
+    "tape": "^4.10.1",
+    "testdouble": "^3.10.0"
   },
   "dependencies": {
     "deep-equal": "^1.0.1",
